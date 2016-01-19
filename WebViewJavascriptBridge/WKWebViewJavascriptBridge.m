@@ -38,6 +38,14 @@
     return bridge;
 }
 
+- (void)setCustomProtocolScheme:(NSString*)protocolScheme {
+    _base.customProtocolScheme = protocolScheme;
+}
+
+- (void)setCustomHostName:(NSString*)hostName {
+    _base.customHostName = hostName;
+}
+
 - (void)send:(id)data {
     [self send:data responseCallback:nil];
 }

@@ -7,9 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define kCustomProtocolScheme @"wvjbscheme"
-#define kQueueHasMessage      @"__WVJB_QUEUE_MESSAGE__"
-
 typedef void (^WVJBResponseCallback)(id responseData);
 typedef void (^WVJBHandler)(id data, WVJBResponseCallback responseCallback);
 typedef NSDictionary WVJBMessage;
@@ -27,6 +24,8 @@ typedef NSDictionary WVJBMessage;
 @property (strong, nonatomic) NSMutableDictionary* messageHandlers;
 @property (strong, nonatomic) WVJBHandler messageHandler;
 @property NSUInteger numRequestsLoading;
+@property (nonatomic, copy) NSString *customProtocolScheme;
+@property (nonatomic, copy) NSString *customHostName;
 
 + (void)enableLogging;
 + (void)setLogMaxLength:(int)length;

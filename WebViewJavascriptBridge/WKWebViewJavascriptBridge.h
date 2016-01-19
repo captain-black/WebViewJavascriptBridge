@@ -22,6 +22,9 @@
 + (instancetype)bridgeForWebView:(WKWebView*)webView webViewDelegate:(NSObject<WKNavigationDelegate>*)webViewDelegate handler:(WVJBHandler)handler resourceBundle:(NSBundle*)bundle;
 + (void)enableLogging;
 
+- (void)setCustomProtocolScheme:(NSString*)protocolScheme;
+- (void)setCustomHostName:(NSString*)hostName;
+
 - (void)send:(id)message;
 - (void)send:(id)message responseCallback:(WVJBResponseCallback)responseCallback;
 - (void)registerHandler:(NSString*)handlerName handler:(WVJBHandler)handler;

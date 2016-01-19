@@ -38,6 +38,8 @@
     }];
     
     [_bridge callHandler:@"testJavascriptHandler" data:@{ @"foo":@"before ready" }];
+    [_bridge setCustomProtocolScheme:@"wvjbscheme"];
+    [_bridge setCustomHostName:@"__WVJB_QUEUE_MESSAGE__"];
     
     [self renderButtons:webView];
     [self loadExamplePage:webView];

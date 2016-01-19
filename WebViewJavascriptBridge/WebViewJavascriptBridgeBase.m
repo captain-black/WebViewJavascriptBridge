@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "WebViewJavascriptBridgeBase.h"
 
+
 @implementation WebViewJavascriptBridgeBase {
     id _webViewDelegate;
     long _uniqueId;
@@ -16,6 +17,20 @@
 
 static bool logging = false;
 static int logMaxLength = 500;
+
+- (NSString *)customProtocolScheme {
+    if (!_customProtocolScheme) {
+        _customProtocolScheme = [@"wvjbscheme" copy];
+    }
+    return _customProtocolScheme;
+}
+
+- (NSString*)customHostName {
+    if (!_customHostName) {
+        _customHostName = [@"__WVJB_QUEUE_MESSAGE__" copy];
+    }
+    return _customHostName;
+}
 
 + (void)enableLogging { logging = true; }
 + (void)setLogMaxLength:(int)length { logMaxLength = length;}
@@ -119,8 +134,10 @@ static int logMaxLength = 500;
 - (void)injectJavascriptFile:(BOOL)shouldInject {
     if(shouldInject){
         NSBundle *bundle = _resourceBundle ? _resourceBundle : [NSBundle mainBundle];
-        NSString *filePath = [bundle pathForResource:@"WebViewJavascriptBridge.js" ofType:@"txt"];
+        NSString *filePath = [bundle pathForResource:@"WebViewJavascriptBridge" ofType:@"js"];
         NSString *js = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        js = [js stringByReplacingOccurrencesOfString:@"<CustomProtocolScheme>" withString:self.customProtocolScheme];
+        js = [js stringByReplacingOccurrencesOfString:@"<CustomHostName>" withString:self.customHostName];
         [self _evaluateJavascript:js];
         [self dispatchStartUpMessageQueue];
     }
@@ -137,7 +154,7 @@ static int logMaxLength = 500;
 }
 
 -(BOOL)isCorrectProcotocolScheme:(NSURL*)url {
-    if([[url scheme] isEqualToString:kCustomProtocolScheme]){
+    if([[url scheme] isEqualToString:self.customProtocolScheme]){
         return YES;
     } else {
         return NO;
@@ -145,7 +162,7 @@ static int logMaxLength = 500;
 }
 
 -(BOOL)isCorrectHost:(NSURL*)url {
-    if([[url host] isEqualToString:kQueueHasMessage]){
+    if([[url host] isEqualToString:self.customHostName]){
         return YES;
     } else {
         return NO;
@@ -153,7 +170,7 @@ static int logMaxLength = 500;
 }
 
 -(void)logUnkownMessage:(NSURL*)url {
-    NSLog(@"WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@", kCustomProtocolScheme, [url path]);
+    NSLog(@"WebViewJavascriptBridge: WARNING: Received unknown WebViewJavascriptBridge command %@://%@", self.customProtocolScheme, [url path]);
 }
 
 -(NSString *)webViewJavascriptCheckCommand {

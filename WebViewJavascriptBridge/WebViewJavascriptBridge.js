@@ -5,8 +5,8 @@
 	var receiveMessageQueue = []
 	var messageHandlers = {}
 	
-	var CUSTOM_PROTOCOL_SCHEME = 'wvjbscheme'
-	var QUEUE_HAS_MESSAGE = '__WVJB_QUEUE_MESSAGE__'
+	var CUSTOM_PROTOCOL_SCHEME = '<CustomProtocolScheme>'
+	var QUEUE_HAS_MESSAGE = '<CustomHostName>'
 	
 	var responseCallbacks = {}
 	var uniqueId = 1
